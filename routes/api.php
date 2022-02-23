@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\EpisodePost;
+use App\Models\EpisodeDownloads;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,14 +19,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::get('/EpisodePost', function(){
-//     return EpisodePost::all();
-// });
+Route::get('/EpisodeDownloads', function(){
+    return EpisodeDownloads::all();
+});
 
-// Route::post('/EpisodePost', function(){
-//     return EpisodePost::create([
-//         'date' => request('date'),
-//         'episodeId' => request('episodeId'),
-//         'episodeId' => request('podcastId'),
-//     ]);
-// });
+Route::post('/EpisodeDownloads', function(){
+    return EpisodeDownloads::create([
+        'day' => request('day'),
+        'eventId' => request('eventId'),
+        'episodeId' => request('episodeId'),
+        'podcastId' => request('podcastId'),
+    ]);
+});

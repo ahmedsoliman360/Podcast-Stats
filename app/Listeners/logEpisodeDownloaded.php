@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Listeners;
-namespace App\Events;
+
+use App\Events\EpisodeDownloaded;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -27,10 +28,11 @@ class logEpisodeDownloaded
      */
     public function handle(EpisodeDownloaded $event)
     {
-        DB::table('downloads')->insert([
-            'date' => $event->date,
+        DB::table('episode_downloads')->insert([
+            'day' => $event->date,
             'episodeId' => $event->episodeId,
-            'podcastId' => $event->podcastId
+            'podcastId' => $event->podcastId,
+            'eventId' => $event->eventId
         ]);
     }
 }
