@@ -3,7 +3,6 @@
 use App\Models\EpisodeDownloads;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,9 +17,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::get('/EpisodeDownloads', function(){
-    return EpisodeDownloads::all();
+// /podcast/{id}/episode/{epId}
+Route::get('/EpisodeDownloads/{date}/{podcastId}/{episodeId}', function(string $date, $podcastId, $episodeId){
+    // for ($i=0; $i < 7; $i++) { 
+    //     # code...
+    // }
+    $stats = EpisodeDownloads::getDayCount($date, $episodeId, $podcastId);
+    return $stats;
 });
 
 Route::post('/EpisodeDownloads', function(){

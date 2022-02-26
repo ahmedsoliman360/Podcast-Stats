@@ -28,6 +28,8 @@ class logEpisodeDownloaded
      */
     public function handle(EpisodeDownloaded $event)
     {
+
+        // CreateEpisodeDownloads::dispatch
         DB::table('episode_downloads')->insert([
             'day' => $event->date,
             'episodeId' => $event->episodeId,
