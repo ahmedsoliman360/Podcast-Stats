@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\EpisodeDownloaded;
-
+use App\Models\EpisodeDownloads;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\DB;
@@ -29,12 +29,17 @@ class logEpisodeDownloaded
     public function handle(EpisodeDownloaded $event)
     {
 
-        // CreateEpisodeDownloads::dispatch
-        DB::table('episode_downloads')->insert([
+        $count = EpisodeDownloads::getDayCount($event->date, $event->episodeId, $event->podcastId);
+        $count = $count + 1;
+        DB::table('episode_downloads')
+            ->updateOrInsert(
+            [
             'day' => $event->date,
-            'episodeId' => $event->episodeId,
-            'podcastId' => $event->podcastId,
-            'eventId' => $event->eventId
-        ]);
+            'episode_Id' => $event->episodeId,
+            'podcast_Id' => $event->podcastId
+            ],
+            ['count' => $count]
+        );
+        return $count;
     }
 }

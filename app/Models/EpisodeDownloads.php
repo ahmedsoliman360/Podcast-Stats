@@ -14,11 +14,10 @@ class EpisodeDownloads extends Model
     public $timestamps = false;
     public static function getDayCount(string $date,int $episodeId,int $podcastId)
     {
-        $stats = EpisodeDownloads::select('day')
-                        ->where('day', '=', date($date))
-                        ->where('podcastId', '=', $podcastId)
-                        ->where('episodeId', '=', $episodeId)
-                        ->count();
+        $stats = EpisodeDownloads::where('day', '=', date($date))
+                        ->where('podcast_Id', '=', $podcastId)
+                        ->where('episode_Id', '=', $episodeId)
+                        ->value('count');
         return $stats;
     }
     protected $fillable = [

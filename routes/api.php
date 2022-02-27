@@ -22,16 +22,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // /podcast/{id}/episode/{epId}
 Route::get('/EpisodeDownloads/{date}/{podcastId}/{episodeId}', function(string $date, $podcastId, $episodeId){
     $date = Carbon::createFromFormat("Y-m-d", $date);
+    $start = $date->copy()->subDays(6);
 
-    $start = $date->startOfWeek()->format('Y-m-d');
-    $end = $date->endOfWeek()->format('Y-m-d');
-    $period = CarbonPeriod::create($start, $end);
+    $period = CarbonPeriod::create($start, $date);
     
     $stats = array();
     foreach ($period as $date) {
         $date = $date->format('Y-m-d');
         $stats[$date] = EpisodeDownloads::getDayCount($date, $episodeId, $podcastId);
-    }
+        $stats[$date] = is_null($stats[$date])? 0 : $stats[$date];
+    }   
     return $stats;
 });
 
