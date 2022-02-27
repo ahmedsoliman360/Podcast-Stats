@@ -3,6 +3,8 @@
 use App\Models\EpisodeDownloads;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,10 +21,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 // /podcast/{id}/episode/{epId}
 Route::get('/EpisodeDownloads/{date}/{podcastId}/{episodeId}', function(string $date, $podcastId, $episodeId){
-    // for ($i=0; $i < 7; $i++) { 
-    //     # code...
-    // }
-    $stats = EpisodeDownloads::getDayCount($date, $episodeId, $podcastId);
+    $date = Carbon::createFromFormat("Y-m-d", $date);
+
+    $start = $date->startOfWeek()->format('Y-m-d');
+    $end = $date->endOfWeek()->format('Y-m-d');
+    $period = CarbonPeriod::create($start, $end);
+    
+    $stats = array();
+    foreach ($period as $date) {
+        $date = $date->format('Y-m-d');
+        $stats[$date] = EpisodeDownloads::getDayCount($date, $episodeId, $podcastId);
+    }
     return $stats;
 });
 
