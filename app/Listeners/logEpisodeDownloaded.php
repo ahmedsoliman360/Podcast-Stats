@@ -29,6 +29,8 @@ class logEpisodeDownloaded
     public function handle(EpisodeDownloaded $event)
     {
 
+        // $count->incrementDailyDownload();
+        // $count->save();
         $count = EpisodeDownloads::getDayCount($event->date, $event->episodeId, $event->podcastId);
         $count = $count + 1;
         DB::table('episode_downloads')

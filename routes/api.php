@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 // /podcast/{id}/episode/{epId}
-Route::get('/EpisodeDownloads/{date}/{podcastId}/{episodeId}', function(string $date, $podcastId, $episodeId){
+Route::get('/EpisodeDownloads/{date}/podcast/{podcastId}/episode/{episodeId}', function(string $date, $podcastId, $episodeId){
     $date = Carbon::createFromFormat("Y-m-d", $date);
     $start = $date->copy()->subDays(6);
 
@@ -35,11 +35,11 @@ Route::get('/EpisodeDownloads/{date}/{podcastId}/{episodeId}', function(string $
     return $stats;
 });
 
-Route::post('/EpisodeDownloads', function(){
-    return EpisodeDownloads::create([
-        'day' => request('day'),
-        'eventId' => request('eventId'),
-        'episodeId' => request('episodeId'),
-        'podcastId' => request('podcastId'),
-    ]);
-});
+// Route::post('/EpisodeDownloads', function(){
+//     return EpisodeDownloads::create([
+//         'day' => request('day'),
+//         'eventId' => request('eventId'),
+//         'episodeId' => request('episodeId'),
+//         'podcastId' => request('podcastId'),
+//     ]);
+// });
